@@ -2,10 +2,6 @@ import express from "express";
 
 const app = express();
 
-app.get("/", (req, res) => {
-    res.send("...");
-});
+app.use(express.json());
 
-app.listen(3000, () => {
-    console.log("Running");
-});
+export default app;
