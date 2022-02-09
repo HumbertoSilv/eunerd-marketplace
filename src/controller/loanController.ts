@@ -6,9 +6,9 @@ export default class CreateLoanController {
         const createLoan = new CreateLoanService();
 
         await createLoan.execute(request.body).then(
-            res => response.status(201).send(res)
+            res => {return response.status(201).send(res)}
         ).catch(
-            (err) => response.status(400).send(err)
+            (err) => {return response.status(400).send(err)}
             );
     };
 };

@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import Loan from "./loanModel";
 
 @Entity("investments")
 export default class Investment {
@@ -10,5 +11,9 @@ export default class Investment {
 
     @Column()
     loanId: string;
+
+    @ManyToOne(() => Loan)
+    @JoinColumn()
+    loan: Loan
 
 };

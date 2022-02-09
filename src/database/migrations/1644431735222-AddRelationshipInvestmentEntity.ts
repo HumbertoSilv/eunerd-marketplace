@@ -4,7 +4,7 @@ export class AddRelationshipInvestmentEntity1644431735222 implements MigrationIn
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createForeignKey(
-            "investment",
+            "investments",
             new TableForeignKey({
                 name: "loanFK",
                 columnNames: ["loanId"],
@@ -17,7 +17,7 @@ export class AddRelationshipInvestmentEntity1644431735222 implements MigrationIn
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropForeignKey("investment", "loanFK")
+        await queryRunner.dropForeignKey("investments", "loanFK")
     }
 
 }
