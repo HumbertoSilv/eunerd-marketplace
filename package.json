@@ -4,11 +4,13 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev src/app.ts"
+    "dev": "ts-node-dev --files --inspect --ignore-watch node_modules src/server.ts",
+    "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js"
   },
   "dependencies": {
     "express": "^4.17.2",
     "pg": "^8.7.3",
+    "reflect-metadata": "^0.1.13",
     "typeorm": "^0.2.41",
     "uuid": "^8.3.2",
     "yup": "^0.32.11"

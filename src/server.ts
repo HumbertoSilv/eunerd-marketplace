@@ -1,5 +1,17 @@
+import "reflect-metadata";
+import { createConnection } from "typeorm";
 import app from "./app";
 
-app.listen(3000, () => {
-    console.log("Running");
+const PORT = 3000;
+
+createConnection().then(() => {
+    console.log("Database connected...");
+
+    app.listen(PORT, () => {
+        console.log("Server running...");
+    });
+
+}).catch((err) => {
+    console.log(err);
 });
+
