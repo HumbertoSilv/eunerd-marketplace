@@ -20,7 +20,7 @@ export class CreateInvestmentEntity1644431250128 implements MigrationInterface {
                         scale: 2,
                         isNullable: false
                     },{
-                        name: "loanId",
+                        name: "loan_id",
                         type: "uuid",
                         isNullable: false
                     }

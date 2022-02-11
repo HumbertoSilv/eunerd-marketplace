@@ -14,7 +14,7 @@ export interface Loan {
 export interface Investment {
     id: string;
     totalInvestedAmountCents: number;
-    loanId: string;
+    loan_id: string;
 };
 
 export interface MarketPlaceItem {
