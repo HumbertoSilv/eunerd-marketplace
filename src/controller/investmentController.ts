@@ -8,10 +8,7 @@ export default class CreateInvestmentController {
         await createInvestment.execute(request.body).then(
             (res) => {return response.status(201).send(res)}
         ).catch(            
-            (err) => {
-                console.log(err)
-                return response.status(400).send(err)
-            }
+            (err) => {console.log(err);return response.status(400).send(err)}
         );
     };
 };
