@@ -4,8 +4,7 @@ import { Loan } from "../types";
 
 export default class CreateLoanService {
     public async execute(loan: Loan) {
-        const loanRepository = getCustomRepository(LoanRepository);
-
+        const loanRepository = getCustomRepository(LoanRepository);        
         const newloan = loanRepository.create(loan);
 
         await loanRepository.save(newloan);

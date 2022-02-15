@@ -1,14 +1,16 @@
 import { Request, Response } from "express";
+import AppError from "../errors/appError";
 import CreateLoanService from "../services/loanService";
 
 export default class CreateLoanController {
     async handle(request: Request, response: Response) {
+        request.body.category = request.body.category.toUpperCase();
         const createLoan = new CreateLoanService();
-
-        await createLoan.execute(request.body).then(
+        
+        return await createLoan.execute(request.body).then(
             res => {return response.status(201).send(res)}
         ).catch(
-            (err) => {return response.status(400).send(err)}
+            (err: AppError) => {return response.status(err.statusCode).json({message: err.message})}
             );
     };
 };

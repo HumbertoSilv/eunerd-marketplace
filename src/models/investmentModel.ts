@@ -7,13 +7,13 @@ export default class Investment {
     id: string;
 
     @Column()
-    totalInvestedAmountCents: number
+    totalInvestedAmountCents: number;
 
     @Column()
-    loanId: string;
+    loan_id: string;
 
     @ManyToOne(() => Loan)
     @JoinColumn()
-    loan: Loan
+    loan: Loan;
 
 };

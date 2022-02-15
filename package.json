@@ -4,11 +4,12 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev --files --inspect --ignore-watch node_modules src/server.ts",
+    "dev": "ts-node-dev --trace-warnings --files --inspect --ignore-watch node_modules src/server.ts",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js"
   },
   "dependencies": {
     "express": "^4.17.2",
+    "express-async-errors": "^3.1.1",
     "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.2.41",

@@ -1,4 +1,6 @@
 import { getCustomRepository } from "typeorm";
+import AppError from "../errors/appError";
+import { investmentSchema, loanSchema } from "../middlewares/schemas";
 import InvestmentRepository from "../repositories/investmentRepository";
 import MarketPlaceItemRepository from "../repositories/marketPlaceItemRepository";
 import { Investment, Loan } from "../types";
@@ -12,30 +14,41 @@ export default class CreateMarketPlaceListService {
 
         const marketPlacelist = [];
 
-        for(let i=0; i<investmentList.length; i++){
-            await createInvestment.execute(investmentList[i]);
+        try{
+            for(let investment in investmentList) {
+                await investmentSchema.validate(investmentList[investment]);
+                await createInvestment.execute(investmentList[investment]);
+            };
+
+        }catch(err){
+            throw new AppError(String(err));
         };
 
-        for(let i = 0; i < loanList.length; i++) {
+        for(let loan in loanList) {
+            await loanSchema.validate(loanList[loan]).catch(
+                (err) => {throw new AppError(String(err))}
+            );
             const sql = `SELECT 
                             SUM("totalInvestedAmountCents")
                             FROM 
                                 investments
                             WHERE
-                                loan_id = '${loanList[i].id}'`;
+                                loan_id = '${loanList[loan].id}'`;
 
             const [ totalInvestment ] = await investmentRepo.manager.query(sql);
+            if(!totalInvestment.sum) totalInvestment.sum = 0;
 
             const newItem = marketPlaceItem.create({
-                category: loanList[i].category,
-                expiresAt: loanList[i].expiresAt,
-                totalRequestedAmount: loanList[i].totalRequestedAmountCents,
+                category: loanList[loan].category,
+                expiresAt: loanList[loan].expiresAt,
+                totalRequestedAmount: loanList[loan].totalRequestedAmountCents,
                 totalInvestmentAmount: parseInt(totalInvestment.sum)
             });
 
             await marketPlaceItem.save(newItem);
 
             marketPlacelist.push(newItem);
+
         };
 
         return marketPlacelist;
