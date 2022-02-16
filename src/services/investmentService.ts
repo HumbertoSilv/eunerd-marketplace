@@ -24,9 +24,9 @@ export default class CreateInvestmentService {
             throw "Loan_id not found.";
         };
 
-        // if(parseInt(totalInvestment.sum) > (loanValue.totalRequestedAmountCents - parseInt(totalInvestment.sum))) {
-        //     throw `Investment value greater than loan value. Balance available R$ ${loanValue.totalRequestedAmountCents - parseInt(totalInvestment.sum)}`;
-        // };
+        if(parseInt(totalInvestment.sum) > (loanValue.totalRequestedAmountCents - parseInt(totalInvestment.sum))) {
+             throw `Investment value greater than loan value. Balance available R$ ${loanValue.totalRequestedAmountCents - parseInt(totalInvestment.sum)}`;
+        };
 
         const newInvestment = investmentRepository.create(investment);
 

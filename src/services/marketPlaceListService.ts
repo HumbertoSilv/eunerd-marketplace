@@ -12,7 +12,8 @@ export default class CreateMarketPlaceListService {
         const investmentRepo = getCustomRepository(InvestmentRepository);
         const createInvestment = new CreateInvestmentService();
 
-        const marketPlacelist = [];
+        const categoryZandX = [];
+        const categoryY = [];
 
         try{
             for(let investment in investmentList) {
@@ -47,10 +48,24 @@ export default class CreateMarketPlaceListService {
 
             await marketPlaceItem.save(newItem);
 
-            marketPlacelist.push(newItem);
-
+            ["Z", "X"].includes(newItem.category) ? categoryZandX.push(newItem) : categoryY.push(newItem);
+            
         };
+        categoryZandX.sort((a, b) => {
+            if(a.category > b.category) return -1
+            return 0;
+        }).sort((a, b): any => {
+            let x = new Date(a.expiresAt),
+                y = new Date(b.expiresAt);
+            return x > y;
+        });
 
-        return marketPlacelist;
+        categoryY.sort((a, b): any => {
+            let x = new Date(a.expiresAt),
+                y = new Date(b.expiresAt);
+            return x > y;
+        });
+
+        return [...categoryZandX, ...categoryY];
     };
 };

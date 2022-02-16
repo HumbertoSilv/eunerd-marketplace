@@ -4,7 +4,7 @@ const date = new Date();
 
 export const loanSchema = yup.object().shape({
     totalRequestedAmountCents: yup.number().positive().required(),
-	category: yup.mixed().oneOf(["x", "y", "z"]).required(),
+	category: yup.mixed().oneOf(["X", "Y", "Z"]).required(),
 	expiresAt: yup.date().min(date).required()
 });
 
