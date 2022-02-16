@@ -3,11 +3,19 @@ import AppError from "../errors/appError";
 import { investmentSchema, loanSchema } from "../middlewares/schemas";
 import InvestmentRepository from "../repositories/investmentRepository";
 import MarketPlaceItemRepository from "../repositories/marketPlaceItemRepository";
-import { Investment, Loan } from "../types";
+import { Investment, Loan, MarketPlaceItem } from "../types";
+import { sortMarketPlace } from "../utils";
 import CreateInvestmentService from "./investmentService";
 
+
 export default class CreateMarketPlaceListService {
-    public async execute(loanList: Loan[], investmentList: Investment[]){
+    /**
+     * Receives loanList and investmentList, validates investmentList 
+     * data and saves investments, validates loanList data and saves a 
+     * MarketPlaceItem for each and returns a Promise<MarketPlaceItem[]>.
+     */
+
+    public async execute(loanList: Loan[], investmentList: Investment[]): Promise<MarketPlaceItem[]>{
         const marketPlaceItem = getCustomRepository(MarketPlaceItemRepository);
         const investmentRepo = getCustomRepository(InvestmentRepository);
         const createInvestment = new CreateInvestmentService();
@@ -29,12 +37,9 @@ export default class CreateMarketPlaceListService {
             await loanSchema.validate(loanList[loan]).catch(
                 (err) => {throw new AppError(String(err))}
             );
-            const sql = `SELECT 
-                            SUM("totalInvestedAmountCents")
-                            FROM 
-                                investments
-                            WHERE
-                                loan_id = '${loanList[loan].id}'`;
+            const sql = `SELECT SUM("totalInvestedAmountCents")
+                            FROM investments
+                            WHERE loan_id = '${loanList[loan].id}'`;
 
             const [ totalInvestment ] = await investmentRepo.manager.query(sql);
             if(!totalInvestment.sum) totalInvestment.sum = 0;
@@ -49,22 +54,9 @@ export default class CreateMarketPlaceListService {
             await marketPlaceItem.save(newItem);
 
             ["Z", "X"].includes(newItem.category) ? categoryZandX.push(newItem) : categoryY.push(newItem);
-            
         };
-        categoryZandX.sort((a, b) => {
-            if(a.category > b.category) return -1
-            return 0;
-        }).sort((a, b): any => {
-            let x = new Date(a.expiresAt),
-                y = new Date(b.expiresAt);
-            return x > y;
-        });
-
-        categoryY.sort((a, b): any => {
-            let x = new Date(a.expiresAt),
-                y = new Date(b.expiresAt);
-            return x > y;
-        });
+        sortMarketPlace(categoryZandX);
+        sortMarketPlace(categoryY);
 
         return [...categoryZandX, ...categoryY];
     };

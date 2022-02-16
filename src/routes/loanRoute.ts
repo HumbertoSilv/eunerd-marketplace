@@ -3,6 +3,7 @@ import CreateLoanController from "../controller/loanController";
 import validateSchema from "../middlewares/validateSchema";
 import { loanSchema } from "../middlewares/schemas";
 
+
 const loanRouter = Router();
 
 loanRouter.post("/", validateSchema(loanSchema), (request, response) => {    

@@ -3,6 +3,7 @@ import CreateMarketPlaceListController from "../controller/marketPlaceListContro
 import validateSchema from "../middlewares/validateSchema";
 import { marketPlaceSchema } from "../middlewares/schemas";
 
+
 const marketPlacelistRouter = Router();
 
 marketPlacelistRouter.post("/", validateSchema(marketPlaceSchema), (request, response) => {
